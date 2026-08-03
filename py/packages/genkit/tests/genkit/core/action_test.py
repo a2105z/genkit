@@ -6,6 +6,7 @@
 """Tests for the action module."""
 
 import json
+from collections.abc import AsyncIterator, Callable
 from typing import Any, cast
 
 import pytest
@@ -416,8 +417,8 @@ async def test_bidi_stream_context_isolation_sequential_and_nested() -> None:
 
     async def bidi_fn(
         init: None,
-        inputs,
-        send_chunk,
+        inputs: AsyncIterator[Any],
+        send_chunk: Callable[[Any], None],
     ) -> dict[str, object] | None:
         # Drain the one-shot input stream; return ambient action context.
         async for _ in inputs:
